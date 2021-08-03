@@ -8,12 +8,22 @@ const cors = require("cors");
 
 app.use(express.json());
 
+const db = require('./keys').mongoURI
+
 app.use(
 
     express.urlencoded({
         extended: true
         })
     );
+
+const mongoose = require('mongoose')
+
+mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true,                                                                                 useUnifiedTopology: true})
+
+                    .then(() => console.log ('Conexión a MongoDB establecida'))
+
+                    .catch(err => console.log (err))
 
 app.use(cors());
 
