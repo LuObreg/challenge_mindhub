@@ -35,7 +35,7 @@ router.get('/all', (req, res) => {
                     res.send(city)
                 })
                 .catch (err => {
-                    res.status(500).send("Error del servidoree")
+                    res.status(500).send("Server error")
                 })
         }
         else{
@@ -43,7 +43,7 @@ router.get('/all', (req, res) => {
         }
     })
     .catch(err => {
-            res.status(500).send ("Error del servidor")
+            res.status(500).send ("Server error")
         });  
     }  
 )
