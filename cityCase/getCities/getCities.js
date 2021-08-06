@@ -1,6 +1,5 @@
-const { City,  response  } = require('../cityModule');
+const { response  } = require('../cityModule');
 const cityRepository  = require('../../repositories/cityRepository');
-const cityModel = require('../../database/models/cityModel');
 
 const getCities = async(req,  res = response) =>  { 
 try {
@@ -10,7 +9,7 @@ try {
     if(!citiesDb){
       return  res.status(401).json({
         ok:false,
-        message:  '',
+        message: 'No se han encontrado registros',
       })
     }
 
