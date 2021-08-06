@@ -1,11 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const cityModel = require('../models/cityModel');
+const { Router  } = require('../cityCase/cityModule')
+const router = new  Router()
+const { create, get  } = require('../cityCase/cityController')
 
 ////////////////////////////
-// GET todas las ciudades //
+// GET           ciudades //
 ////////////////////////////
+router.get('/cities', get.getCities);
+router.get('/city/:id', get.getCity);
+router.get('/city', get.getCityByQuery);
 
+/*
 router.get('/all', (req, res) => {
     cityModel.find ({})
     .then (data => {
@@ -13,12 +17,13 @@ router.get('/all', (req, res) => {
         })
     .catch(err => console.log (err));
     });
-
+*/
 
 ////////////////////////////
 // POST    nueva city //////
 ////////////////////////////
-
+router.post('/', create.create);
+/*
  router.post('/', (req, res) => {
 
     cityModel.find ({ "name": req.body.name })
@@ -47,6 +52,6 @@ router.get('/all', (req, res) => {
         });  
     }  
 )
-
+*/
 
 module.exports = router;
