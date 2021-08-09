@@ -1,52 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const cityModel = require('../models/cityModel');
+const { Router  } = require('../cityCase/cityModule')
+const router = new  Router()
+const { create, get  } = require('../cityCase/cityController')
 
 ////////////////////////////
-// GET todas las ciudades //
+// GET           ciudades //
 ////////////////////////////
-
-router.get('/all', (req, res) => {
-    cityModel.find ({})
-    .then (data => {
-        res.send(data)
-        })
-    .catch(err => console.log (err));
-    });
-
+router.get('/cities', get.getCities);
+router.get('/city/:id', get.getCity);
+router.get('/city', get.getCityByQuery);
 
 ////////////////////////////
 // POST    nueva city //////
 ////////////////////////////
-
- router.post('/', (req, res) => {
-
-    cityModel.find ({ "name": req.body.name })
-    .then( cityFound=>{
-        if (cityFound.length == 0){
-            const newCity = new cityModel({
-                name: req.body.name,
-                country: req.body.country,
-                img:  req.body.img
-                })
-    
-            newCity.save()
-                .then(city => {
-                    res.send(city)
-                })
-                .catch (err => {
-                    res.status(500).send("Server error")
-                })
-        }
-        else{
-            res.status(500).send (req.body.name + " already exists")
-        }
-    })
-    .catch(err => {
-            res.status(500).send ("Server error")
-        });  
-    }  
-)
-
+router.post('/', create.create);
 
 module.exports = router;
