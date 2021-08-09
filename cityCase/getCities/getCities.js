@@ -3,20 +3,19 @@ const cityRepository  = require('../../repositories/cityRepository');
 
 const getCities = async(req,  res = response) =>  { 
 try {
-    const citiesDb  = await cityRepository.getAll()
+    const data  = await cityRepository.getAll()
     const count = await cityRepository.count()  
   
-    if(!citiesDb){
+    if(!data){
       return  res.status(401).json({
-        ok:false,
+        ok: false,
         message: 'No se han encontrado registros',
       })
     }
-
     res.status(200).json({
       ok: true,
       message:  'Ciudades',
-      cities: citiesDb,
+      response: data,
       total: count
     })  
   } catch (error) {
@@ -34,10 +33,10 @@ const getCity = async (req, res = response) =>  {
   
     try {
   
-        const cityDb  = await cityRepository.getOne(id)
-        console.log(cityDb);
+        const data  = await cityRepository.getOne(id)
+        console.log(data);
   
-        if(!cityDb){
+        if(!data){
           return  res.status(400).json({
             ok:false,
             message:  '',
@@ -48,7 +47,7 @@ const getCity = async (req, res = response) =>  {
        return res.status(200).json({
           ok: true,
           message:  'Ciudad',
-          cities: cityDb,
+          response: data,
         })  
   
       } catch (error) {
@@ -66,10 +65,10 @@ const getCity = async (req, res = response) =>  {
   
     try {
   
-        const cityDb  = await cityRepository.getCityByName(name)
-        console.log(cityDb);
+        const data  = await cityRepository.getCityByName(name)
+        console.log(data);
   
-        if(!cityDb){
+        if(!data){
           return  res.status(400).json({
             ok:false,
             message:  '',
@@ -80,7 +79,7 @@ const getCity = async (req, res = response) =>  {
        return res.status(200).json({
           ok: true,
           message:  'Ciudad',
-          cities: cityDb,
+          response: data,
         })  
   
       } catch (error) {

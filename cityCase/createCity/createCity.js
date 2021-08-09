@@ -15,7 +15,7 @@ const create = async(req, res = response) => {
                     const city = cityDB  
                     res.status(201).json({
                         ok: true,
-                        message:  'La Ciudad se creo correctamente',
+                        message:  'Ciudad creada correctamente',
                         city
                     })
                 })
