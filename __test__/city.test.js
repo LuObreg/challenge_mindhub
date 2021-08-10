@@ -3,9 +3,9 @@ describe('Get /api/cities', () => {
         const response = await request(app).get('/api/cities')
         expect(response.status).toBe(200)
         expect(response.body.ok).toBe(true)
-        expect(response.body.total).toBe(10)
+        expect(response.body.total).toBe(27)
         expect(response.body).not.toBeNull()
-        expect(Array.isArray(response.body.cities)).toBe(true)
+        expect(Array.isArray(response.body.response)).toBe(true)
     });
 });
 
