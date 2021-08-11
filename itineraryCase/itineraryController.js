@@ -1,4 +1,4 @@
-const get = require('./getItineraries');
+const get = require('./getItineraries/getItineraries');
 
 module.exports = {
     get

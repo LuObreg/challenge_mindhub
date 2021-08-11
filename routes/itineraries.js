@@ -1,8 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const itineraryModel = require('../models/itineraryModel');
+const { Router  } = require('../itineraryCase/itineraryModule')
+const router = new  Router()
+const { get  } = require('../itineraryCase/itineraryController')
 
-router.get('/', get.getAll);
-router.get('/city', get.getByCityID);
+////////////////////////////
+// GET        itinerarios //
+////////////////////////////
+router.get('/', get.getAllItineraries);
+router.get('/:city', get.getbyCityID);
+
 
 module.exports = router;

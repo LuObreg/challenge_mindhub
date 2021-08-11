@@ -19,9 +19,12 @@ mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true,              
         .catch(err => console.log (err))
 
 app.use('/api', require ('./routes/cities'));
+app.use('/api/users', require ('./routes/users'));
+app.use('/api/itineraries', require ('./routes/itineraries'));
+
 
 module.exports = {
     port,
     app
-    }
+}
     

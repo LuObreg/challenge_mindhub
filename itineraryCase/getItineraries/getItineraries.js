@@ -1,8 +1,7 @@
-const { response } = require('../itineraryModule');
 const itineraryRepository = require('../../repositories/itineraryRepository');
 const cityRepository = require('../../repositories/cityRepository');
 
-const getAll = async (req, res) => {
+const getAllItineraries = async (req, res) => {
     try {
         const itinerariesDb = await itineraryRepository.getAllItineraries();
         const count = await itineraryRepository.countItineraries();
@@ -10,13 +9,13 @@ const getAll = async (req, res) => {
         if (itinerariesDb.length === 0) {
             return res.status(401).json({
                 ok: false,
-                msg: 'No hay registros en la base de datos'
+                message: 'No hay registros en la base de datos'
             });
         }
 
         res.status(200).json({
             ok: true,
-            msg: 'Itinerarios',
+            message: 'Itinerarios',
             itinerarios: itinerariesDb,
             cantidad: count
         });
@@ -24,7 +23,7 @@ const getAll = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Hubo un error',
+            message: 'Hubo un error',
             error
         });
     }
@@ -39,26 +38,26 @@ const getbyCityID = async (req, res) => {
         if (itinerariesByCity.length == 0){
             return res.status(401).json({
                 ok: false,
-                msg: `No hay registros vinculados a ${city}`
+                message: `No hay registros vinculados a ${city}`
             });
         }
 
         res.status(200).json({
             ok: true,
-            msg: "Itinerarios: ",
+            message: "Itinerarios: ",
             itinerarios: itinerariesByCity
         });
     }
     catch(error){
         res.status(500).json({
             ok: false,
-            msg: "Error",
+            message: "Error",
             error
         });
     }
 }
 
 module.exports = {
-    getAll,
+    getAllItineraries,
     getbyCityID
 }

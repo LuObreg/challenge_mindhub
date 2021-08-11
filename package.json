@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \" nodemon server.js \"\" cd ../client && npm start \"",
     "test": "jest --runInBand"
-   },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LuObreg/challenge_mindhub.git"
@@ -18,11 +18,16 @@
   },
   "homepage": "https://github.com/LuObreg/challenge_mindhub#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.13.5"
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.5",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -31,5 +36,5 @@
   },
   "jest": {
     "testEnvironment": "node"
-    }    
+  }
 }
