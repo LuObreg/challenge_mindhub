@@ -34,7 +34,6 @@ const getCity = async (req, res = response) =>  {
     try {
   
         const data  = await cityRepository.getOne(id)
-        console.log(data);
   
         if(!data){
           return  res.status(400).json({
@@ -60,13 +59,11 @@ const getCity = async (req, res = response) =>  {
   }
   
   const getCityByQuery  = async (req, res = response) =>  {
-    console.log(req);
     const name  = req.query.name
   
     try {
   
         const data  = await cityRepository.getCityByName(name)
-        console.log(data);
   
         if(!data){
           return  res.status(400).json({
