@@ -32,7 +32,6 @@ const getUserByMail = async (req, res = response) => {
     try{
         const mail = req.query.mail;
         const userDb = await userRepository.getUserByMail(mail);
-
         if(!userDb){
             return res.status(401).json({
                 ok: false,

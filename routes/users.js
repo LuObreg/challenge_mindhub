@@ -12,6 +12,6 @@ router.post('/', create.create);
 // GET              users //
 ////////////////////////////
 router.get('/:id', get.getUserById);
-router.get('/:mail', get.getUserByMail);
+router.get('/', get.getUserByMail);
 
 module.exports = router;

@@ -21,6 +21,7 @@ mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true,              
 app.use('/api', require ('./routes/cities'));
 app.use('/api/users', require ('./routes/users'));
 app.use('/api/itineraries', require ('./routes/itineraries'));
+app.use('/api/auth', require('./routes/auth'));
 
 
 module.exports = {
