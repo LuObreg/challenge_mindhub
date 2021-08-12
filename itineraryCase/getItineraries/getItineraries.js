@@ -8,13 +8,13 @@ const getAllItineraries = async (req, res) => {
 
         if (itinerariesDb.length === 0) {
             return res.status(401).json({
-                ok: false,
+                success: false,
                 message: 'No hay registros en la base de datos'
             });
         }
 
         res.status(200).json({
-            ok: true,
+            success: true,
             message: 'Itinerarios',
             itinerarios: itinerariesDb,
             cantidad: count
@@ -22,36 +22,34 @@ const getAllItineraries = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            ok: false,
+            success: false,
             message: 'Hubo un error',
             error
         });
     }
 }
 
+
 const getbyCityID = async (req, res) => {
     try{
-        const city = req.params.city;
-        const { id }  = await cityRepository.getCity(city);
-        const itinerariesByCity = await itineraryRepository.getItinerariesByCityId(id);
-
+        const id = req.params.id;
+        const itinerariesByCity = await itineraryRepository.getbyCityID(id);
         if (itinerariesByCity.length == 0){
             return res.status(401).json({
-                ok: false,
-                message: `No hay registros vinculados a ${city}`
+                success: false,
+                message: `No entries for this city`
             });
         }
+        console.log(itinerariesByCity)
 
         res.status(200).json({
-            ok: true,
-            message: "Itinerarios: ",
-            itinerarios: itinerariesByCity
+            success: true,
+            response: itinerariesByCity
         });
     }
     catch(error){
         res.status(500).json({
-            ok: false,
-            message: "Error",
+            success: false,
             error
         });
     }

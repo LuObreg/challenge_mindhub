@@ -19,9 +19,9 @@ mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true,              
         .catch(err => console.log (err))
 
 app.use('/api', require ('./routes/cities'));
-app.use('/api/users', require ('./routes/users'));
-app.use('/api/itineraries', require ('./routes/itineraries'));
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/user', require ('./routes/users'));
+app.use('/api', require ('./routes/itineraries'));
+app.use('/api/user', require('./routes/auth'));
 
 
 module.exports = {

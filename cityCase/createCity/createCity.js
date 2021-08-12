@@ -1,6 +1,12 @@
 const { City, response } = require('../cityModule');
+const { validationResult } = require('express-validator');
 
 const create = async(req, res = response) => {
+      // Check for errors
+      const errores = validationResult(req);
+      if( !errores.isEmpty() ){
+          return res.status(400).json({ errores: errores.array() });
+      };
     City.find ({ "name": req.body.name })
     .then( cityFound=>{
         if (cityFound.length == 0){

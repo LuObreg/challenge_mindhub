@@ -1,7 +1,7 @@
 # MyTinerary
 
 ### Seguridad
-Se utilizan passport y JWT para encriptar los datos para el login.
+Se utilizan passport y JWT para autenticación y autorización de los datos en el login.
 Se utiliza bcrypt para encriptar las passwords del usuario.
 
 ### Test

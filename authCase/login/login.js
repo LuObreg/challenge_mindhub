@@ -2,12 +2,19 @@ const { response, userRepository } = require('../authModule');
 const bcrypt = require("bcrypt");
 const key = require("../../keys");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require('express-validator');
+
 
 const login = async(req, res = response) => {
+    // Check for errors
+    const errores = validationResult(req);
+    if( !errores.isEmpty() ){
+        return res.status(400).json({ errores: errores.array() });
+    };
+    
     try{
-        const { mail, password } = req.body;
-
-        let user = await userRepository.getUserByMail(mail);
+        let user = await userRepository.getUserByMail(req.body.email);
+        console.log(user);
         if(!user){
             return res.status(400).json({
                 ok: false,
@@ -15,7 +22,7 @@ const login = async(req, res = response) => {
             });
         }
         else{
-            const pass = await bcrypt.compare(password, user.password);
+            const pass = await bcrypt.compare(req.body.password, user.password);
             if(!pass){
                 return res.status(400).json({
                     ok: false,
@@ -25,28 +32,34 @@ const login = async(req, res = response) => {
 
             const payload = {
                 id: user.id,
-                username: user.username,
-                avatarPicture: user.avatarPicture
-          };
-          const options = {expiresIn: 2592000};
-          jwt.sign(
-              payload,
-              key.secretOrKey,
-              options,
-              (err, token) => {
-                 if(err){
-                   res.json({
-                   success: false,
-                   token: "There was an error"
-                 });
-                 }else {
-                   res.json({
-                      success: true,
-                      token: token
-                   });
-                  }
-                 }
-                ); 
+                username: user.firstName,
+                avatarPicture: user.userPic
+            };
+
+            const options = {expiresIn: 2592000};
+            jwt.sign(
+                payload,
+                key.secretOrKey,
+                options,
+                (err, token) => {
+                    if(err){
+                    res.json({
+                    success: false,
+                    token: "There was an error"
+                    });
+                    }else {
+                        res.json({
+                            success: true,
+                            response: {
+                                message: "logged in",
+                                token,
+                                firstName: user.firstName,
+                                userPic: user.userPic
+                            }
+                        });
+                    }   
+                }
+            ); 
 
         }
     }
@@ -55,8 +68,27 @@ const login = async(req, res = response) => {
     }
 }
 
+const loginls = async(req, res = response) => {
+    try{
+        res.status(200).json({
+            success: true,
+            response: {
+                userPic: req.user.userPic, 
+                firstName: req.user.firstName   
+            }
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            success: false,
+            error
+        })
+    }
+}
+
 
 
 module.exports = {
-    login
+    login,
+    loginls
 }
