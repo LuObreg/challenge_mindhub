@@ -13,7 +13,7 @@ const itinerarySchema = new mongoose.Schema({
     likes: { type: Number, required: true, default: 0},
     hashtags: { type: Array, required: true },
     comments: [{userId: {type: ObjectID, ref: 'user'}, text: String, userName: String, userPic: String}],
-    usersLike: { type: String },
+    usersLike: { type: Array },
     cityID: { type: ObjectID, ref: 'City', required: true}
 })
 

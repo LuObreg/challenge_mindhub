@@ -14,7 +14,6 @@ const login = async(req, res = response) => {
     
     try{
         let user = await userRepository.getUserByMail(req.body.email);
-        console.log(user);
         if(!user){
             return res.status(400).json({
                 ok: false,
