@@ -11,9 +11,9 @@ router.get('/itineraries', get.getAllItineraries);
 router.get('/itineraries/:id', get.getbyCityID);
 router.get('/checkuser/:id', passport.authenticate("jwt", { session: false }), get.getUserComments);
 router.post('/comments/:id', passport.authenticate("jwt", { session: false }), get.postComment);
-//router.put('/comments/:id', passport.authenticate("jwt", { session: false }), get.deleteComment);
-//router.put('/comments/:id', passport.authenticate("jwt", { session: false }), get.editComment);
 router.get('/like/:id', passport.authenticate("jwt", { session: false }), get.likeIt)
 // passport.authenticate('jwt', { session: false }), login.loginls
-router.delete('/comment/:id', passport.authenticate("jwt", { session: false }), get.deleteComment)
+router.delete('/comment/:id', passport.authenticate("jwt", { session: false }), get.deleteComment);
+router.put('/comment/:id', passport.authenticate("jwt", { session: false }), get.editComment)
+
 module.exports = router;

@@ -1,11 +1,8 @@
 const itineraryRepository = require('../../repositories/itineraryRepository');
-const cityRepository = require('../../repositories/cityRepository');
-const itineraryModel = require('../../database/models/itineraryModel');
 
 const getAllItineraries = async (req, res) => {
     try {
         const itinerariesDb = await itineraryRepository.getAllItineraries();
-        const count = await itineraryRepository.countItineraries();
 
         if (itinerariesDb.length === 0) {
             return res.status(401).json({
@@ -18,7 +15,7 @@ const getAllItineraries = async (req, res) => {
             success: true,
             message: 'Itinerarios',
             itinerarios: itinerariesDb,
-            cantidad: count
+            cantidad: itinerariesDb.length
         });
 
     } catch (error) {
@@ -68,14 +65,16 @@ const getUserComments = async(req, res = response) => {
                 return comment._id
             }
         })
+
         const likedChek = comments[0].usersLike.includes(userId);
+
        // let arrayOwnerCheck = comments[0].comments.filter((comment) => comment.userId.toString() === userId.toString()).map(({_id}) => _id);
 
         res.status(200).json({
             success: true,
             response:{
                 arrayOwnerCheck, 
-                likedChek   
+                likedChek
             }
         })
     }
@@ -126,15 +125,8 @@ const postComment = async(req, res = response) => {
     }
 }
 const editComment = async(req, res = response) => {
-    try{
-        const data = {
-            id: req.params.id,
-            userId: req.user._id
-        }
-        const itinerary = await itineraryRepository.getbyCityID(data)
-        console.log(itinerary)
-        const updString = `{"comments._id": ${req.params.id}, {$set: {"comments.$.text": ${req.body.text}}, {new: true}`;
-        const itineraryModified = await itineraryRepository.findOneandUpdate(updString)
+    try{       
+        const itineraryModified = await itineraryRepository.edit({"comments._id": req.params.id}, { $set: { "comments.$.text" : req.body.text }}, { new: true });
         res.status(200).json({
             success: true,
             response: itineraryModified.comments
@@ -151,25 +143,11 @@ const editComment = async(req, res = response) => {
 const deleteComment = async(req, res = response) => {
     try{
         const commentId = req.params.id; 
-        const userId = req.user._id;
-        let toDel = {
-            comment: commentId,
-            user: userId
-        }
-
-        const itinerary = await itineraryRepository.getById(toDel);
-        console.log(itinerary)
-        if(itinerary){
-            const deletedItinerary = await itineraryRepository.deleteComment(toDel);
-            //console.log(deletedItinerary)
-            res.status(200).json({
-                success: true, 
-                response: deletedItinerary.comments
-            })
-        }
-        else{
-            error = "Unauthorized";
-        }
+        const deletedItinerary = await itineraryRepository.edit({ "comments._id": commentId },{ $pull: { "comments" : { '_id': commentId } }}, { new: true });
+        res.status(200).json({
+            success: true, 
+            response: deletedItinerary.comments
+        })
     }
     catch(error){
         res.status(500).json({
@@ -179,73 +157,23 @@ const deleteComment = async(req, res = response) => {
     }
 }
 
-/*const likeIt = async(req, res = response) => {
-    try{
-        const user = req.user
-        const id = req.params.id
-        const likes = await itineraryRepository.getById(id)
-        likes = likes[0].usersLike;
-
-        var isLiked = likes.findIndex(user._id)
-
-        var like = {
-            id: id,
-            user: user._id
-        }
-
-        if(isLiked == - 1){
-            await itineraryRepository.likeIt(like);
-            likes = likes.length + 1
-        } 
-        else{
-            await itineraryRepository.unlikeIt(like)
-            likes = likes.length - 1
-        }
-        const liked = isLiked == -1 ? true : false
-        res.status(200).json({
-            success: true,
-            response: {
-                likes, 
-                liked
-            }
-        })
-    }
-    catch(error){
-        res.status(500).json({
-            success: false,
-            error
-        })
-    }
-
-}*/
-
 const likeIt = async(req, res = response) => {
+    const { id: paramId } = req.params;
+    const { _id: userId } = req.user;
+
     try{
-        const toLike = {
-            id: req.params.id,
-            userId: req.user._id
-        }
-        const itineraryToLike = await itineraryRepository.getToLike(toLike);
-        //console.log(itineraryToLike);//null
-        let pullOrPush = itineraryToLike ? "$pull" : "$push";
-        //console.log(pullOrPush)
+        const itineraryToLike = await  itineraryRepository.findOne({ "_id": paramId, "usersLike": userId })
+        let filter = itineraryToLike ? "$pull" : "$push";
         let liked = itineraryToLike ? false : true;
-        let amt = pullOrPush == "$pull" ? -1 : 1;
-        let updateFields = {
-            method: pullOrPush,
-            id: toLike.id,
-            userId: toLike.userId,
-            amt
-        }
-        await itineraryRepository.likeIt(updateFields);
-        let itineraryModified = await itineraryRepository.getToLike(toLike)
-        res.status(200).json({
-            success: true,
-            response: {
-                likes: itineraryModified.usersLike.length, 
-                liked
-            }
-        })
+        
+        let itineraryLiked = await itineraryRepository.edit({ "_id": paramId }, { [filter]: { 'usersLike': userId } }, { new: true });
+
+        let likesFromDb = parseInt(itineraryLiked.likes);
+
+        let itineraryModified = await itineraryRepository.edit({ "_id": paramId }, { $set: { "likes": likesFromDb += liked ? 1 : -1 }}, { new: true });
+
+        res.status(200).json({ success: true,  response: { likes: itineraryModified.likes, liked  } });
+
     }
     catch(error){
         res.status(500).json({
