@@ -8,19 +8,19 @@ try {
   
     if(!data){
       return  res.status(401).json({
-        ok: false,
+        success: false,
         message: 'No se han encontrado registros',
       })
     }
     res.status(200).json({
-      ok: true,
+      success: true,
       message:  'Ciudades',
       response: data,
       total: count
     })  
   } catch (error) {
     res.status(500).json({
-      ok:false,
+      success:false,
         message:  'Error Interno del Servidor',
         err: error
     })
@@ -37,21 +37,21 @@ const getCity = async (req, res = response) =>  {
   
         if(!data){
           return  res.status(400).json({
-            ok:false,
+            success:false,
             message:  '',
             err
           })
         }
     
        return res.status(200).json({
-          ok: true,
+          success: true,
           message:  'Ciudad',
           response: data,
         })  
   
       } catch (error) {
         res.status(500).json({
-          ok:false,
+          success:false,
           message:  'Error Interno del Servidor',
           error
         })
@@ -67,21 +67,21 @@ const getCity = async (req, res = response) =>  {
   
         if(!data){
           return  res.status(400).json({
-            ok:false,
+            success:false,
             message:  '',
             err
           })
         }
     
        return res.status(200).json({
-          ok: true,
+          success: true,
           message:  'Ciudad',
           response: data,
         })  
   
       } catch (error) {
         res.status(500).json({
-          ok:false,
+          success:false,
           message:  'Error Interno del Servidor',
           error
         })
