@@ -104,10 +104,11 @@ const postComment = async(req, res = response) => {
         
         const itinerary = await itineraryRepository.postComment(comment);
         let userComments = itinerary.comments.map(comment =>{
-            if(comment.userId.toString() == id.toString()){
+            if(comment.userId.toString() == req.user._id.toString()){
                 return comment._id
             }
         })
+
         res.status(200).json({
             success: true,
             response: {
