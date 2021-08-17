@@ -12,7 +12,7 @@ const postComment = async comment => await Itinerary.findByIdAndUpdate({_id: com
 
 const edit = async (filter, update, option) => await Itinerary.findOneAndUpdate(filter, update, option);
 
-const findONe = async value => await Itinerary.findOne(value);
+const findOne = async value => await Itinerary.findOne(value);
 
 
 
